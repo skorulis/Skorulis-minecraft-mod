@@ -7,7 +7,7 @@ import net.minecraft.src.ItemStack;
 public class SKRecipes {
 
 	public void addRecipes(CraftingManager man) {
-		man.addRecipe(new ItemStack(Block.store), new Object[]{"##","##",Character.valueOf('#'),Block.dirt});
+		man.addRecipe(new ItemStack(BlockUtil.store), new Object[]{"##","##",Character.valueOf('#'),Block.dirt});
 	}
 	
 }

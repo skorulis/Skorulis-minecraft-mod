@@ -1,1 +1,12 @@
-Container.java:194 ADD slot.onSlotChanged();
+Below are a list of changes that I have made to files from minecraft.jar 1.5_01
+If you want the code to work correctly you will have to make these changes
+
+Container.java:194 ADD 
+slot.onSlotChanged();
+
+EntityPlayerSP.java:153 ADD 
+public GUIStore displayGUIStore(IInventory inv) {
+	GUIStore store = new GUIStore(this,inv);
+	mc.displayGuiScreen(store);
+	return store;
+}

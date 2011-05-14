@@ -11,7 +11,6 @@ import java.io.IOException;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTBase;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.SKTagCompound;
@@ -20,11 +19,12 @@ public class StoreInventory implements IInventory{
 
 	private ItemStack contents[];
 	private int credits;
-	
+	private int previousValue;
+	private boolean disableCreditUpdate;
 	
 	public StoreInventory() {
 		contents = new ItemStack[36];
-		credits = 10000;
+		credits = 0;
 	}
 	
 	@Override
@@ -39,7 +39,6 @@ public class StoreInventory implements IInventory{
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		System.out.println("DEC " + i + " - " + j);
 		if(contents[i] != null)
         {
 			int max = StoreUtil.instance().maxPurchase(credits, contents[i].itemID);
@@ -54,7 +53,6 @@ public class StoreInventory implements IInventory{
                 ItemStack itemstack = contents[i];
                 int cost = StoreUtil.instance().getCost(itemstack);
                 if(credits >= cost) {
-                	credits-=cost;
                 	contents[i] = null;
                 	onInventoryChanged();
                 	return itemstack;
@@ -65,7 +63,6 @@ public class StoreInventory implements IInventory{
             ItemStack itemstack1 = contents[i].splitStack(j);
             int cost = StoreUtil.instance().getCost(itemstack1);
             if(credits >= cost) {
-            	credits-=cost;
             	if(contents[i].stackSize == 0)
                 {
                     contents[i] = null;
@@ -80,9 +77,7 @@ public class StoreInventory implements IInventory{
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		System.out.println("SET " + i + " - " + itemstack);
-		contents[i] = new SKStoreStack(itemstack,this);
-		credits+=StoreUtil.instance().getCost(itemstack);
+		contents[i] = itemstack.copy();
         if(itemstack != null && itemstack.stackSize > getInventoryStackLimit())
         {
             itemstack.stackSize = getInventoryStackLimit();
@@ -111,11 +106,15 @@ public class StoreInventory implements IInventory{
 
 	@Override
 	public void onInventoryChanged() {
-		System.out.println("INV CHANGED " + calcValue());
-		
+		int val = calcValue();
+		if(!disableCreditUpdate) {
+			credits+= (val-previousValue);
+		}
+		previousValue = val;
 		saveInventory(SKDataManager.worldDir);
 	}
 	
+	//Calculates the entire value of the contents of the store
 	public int calcValue() {
 		int total = 0;
 		for(int i=0; i < getSizeInventory(); ++i) {
@@ -156,6 +155,7 @@ public class StoreInventory implements IInventory{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		previousValue = calcValue();
 	}
 	
 	public void readFromNBT(NBTTagCompound nbttagcompound)
@@ -168,7 +168,7 @@ public class StoreInventory implements IInventory{
             int j = nbttagcompound1.getByte("Slot") & 0xff;
             if(j >= 0 && j < contents.length)
             {
-                contents[j] = new SKStoreStack(nbttagcompound1,this);
+                contents[j] = new ItemStack(nbttagcompound1);
             }
         }
 
@@ -196,6 +196,14 @@ public class StoreInventory implements IInventory{
 		return true;
 	}
 
-	
+	public void clear() {
+		for(int i=0; i < getSizeInventory(); ++i) {
+			contents[i] = null;
+		}
+	}
+
+	public void setDisableCreditUpdate(boolean val) {
+		disableCreditUpdate = val;
+	}
 	
 }

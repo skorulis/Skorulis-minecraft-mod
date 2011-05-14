@@ -1,5 +1,8 @@
 package com.skorulis.minecraft;
 
+import java.lang.ref.PhantomReference;
+import java.lang.ref.WeakReference;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
@@ -31,7 +34,9 @@ public class StoreBlock extends Block {
 	 }
 	 
 	 public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
-		 ((EntityPlayerSP)entityplayer).displayGUIStore(getInventory());
+		 
+		 StoreUtil.instance().guiRef = new WeakReference<GUIStore>(((EntityPlayerSP)entityplayer).displayGUIStore(getInventory()));
+		 
 		 return true;
 	 }
 	

@@ -1,15 +1,24 @@
 package com.skorulis.minecraft;
 
+import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.ItemStack;
 
-public class StoreUtil {
+public class StoreUtil extends ReferenceQueue<GUIStore>{
 
 	private int blockPrice[] = new int[BlockUtil.MAX_BLOCK];
 	
+	private Timer storeTimer;
+	
 	private static StoreUtil instanace;
+	
+	public WeakReference<GUIStore> guiRef;
 	
 	private StoreUtil() {
 		blockPrice[Block.blockBed.blockID] = 20;
@@ -48,6 +57,15 @@ public class StoreUtil {
 		blockPrice[Block.glass.blockID] = 7;
 		blockPrice[Block.oreCoal.blockID] = 20;
 		blockPrice[Block.oreDiamond.blockID] = 1000;
+		
+		storeTimer = new Timer();
+		scheduleTimer();
+		
+	}
+	
+	private void scheduleTimer() {
+		long delay = 1000*20;
+		storeTimer.schedule(new StoreUpdateTask(), delay);
 	}
 	
 	public static StoreUtil instance() {
@@ -59,13 +77,17 @@ public class StoreUtil {
 	
 	public void generateInventory(StoreInventory inv) {
 		Random random = new Random();
+		inv.setDisableCreditUpdate(true);
 		int j;
+		inv.clear();
 		for(int i=0; i < 20; ++i) {
 			j = random.nextInt(100);
 			if(blockPrice[j] > 0) {
 				inv.addItem(new ItemStack(Block.blocksList[j],random.nextInt(16)));
 			}
 		}
+		inv.onInventoryChanged();
+		inv.setDisableCreditUpdate(false);
 	}
 	
 	public int maxPurchase(int credits, int itemID) {
@@ -81,6 +103,32 @@ public class StoreUtil {
 			return 0;
 		}
 		return blockPrice[stack.itemID]*stack.stackSize;
+	}
+	
+	public void setPrice(int itemID,int price) {
+		if(itemID < blockPrice.length) {
+			blockPrice[itemID] = price;
+		} else {
+			System.err.println("Could not set price for " + itemID);
+		}
+	}
+	
+	public boolean isStoreOpen() {
+		return guiRef!=null && guiRef.get()!=null;
+	}
+	
+	private static class StoreUpdateTask extends TimerTask {
+
+		@Override
+		public void run() {
+			System.out.println("INVENTORY UPDATE");
+			if(!StoreUtil.instance().isStoreOpen()) {
+				StoreUtil.instance().generateInventory(StoreBlock.inventory);
+			}
+			StoreUtil.instance().scheduleTimer();
+		}
+		
+		
 	}
 	
 }

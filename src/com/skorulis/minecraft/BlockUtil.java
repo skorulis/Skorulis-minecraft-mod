@@ -15,4 +15,15 @@ public class BlockUtil {
 		return 0; //Will probably cause a crash
 	}
 	
+	public static final Block copperOre;
+    public static final Block store;
+    
+    static {
+    	copperOre = (new CopperOreBlock(1));
+        store = new StoreBlock(76);
+    	
+    }
+	
+    
+	
 }
