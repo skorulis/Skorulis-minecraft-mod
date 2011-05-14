@@ -10,3 +10,6 @@ public GUIStore displayGUIStore(IInventory inv) {
 	mc.displayGuiScreen(store);
 	return store;
 }
+
+Minecraft.java:1162 ADD
+SKDataManager.loadStart(mcDataDir+File.separator+"saves"+File.separator+s);

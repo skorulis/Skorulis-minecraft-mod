@@ -152,6 +152,7 @@ public class StoreInventory implements IInventory{
 			input.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("No store exists for " + world);
+			credits = 0;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

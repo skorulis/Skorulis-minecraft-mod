@@ -5,6 +5,11 @@ import net.minecraft.src.Block;
 public class BlockUtil {
 
 	public static final int MAX_BLOCK = 256;
+	public static final int MAX_ITEM = MAX_BLOCK + 256;
+	
+	public static void init() {
+		
+	}
 	
 	public static int nextBlockId() {
 		for(int i=50; i < MAX_BLOCK; ++i) {
@@ -21,7 +26,7 @@ public class BlockUtil {
     static {
     	copperOre = (new CopperOreBlock(1));
         store = new StoreBlock(76);
-    	
+        System.out.println("STORE " + store.blockID);
     }
 	
     

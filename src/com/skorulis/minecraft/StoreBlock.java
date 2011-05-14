@@ -1,14 +1,14 @@
 package com.skorulis.minecraft;
 
-import java.lang.ref.PhantomReference;
 import java.lang.ref.WeakReference;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
-import net.minecraft.src.IInventory;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
+
+import com.skorulis.minecraft.BlockUtil;
 
 public class StoreBlock extends Block {
 
