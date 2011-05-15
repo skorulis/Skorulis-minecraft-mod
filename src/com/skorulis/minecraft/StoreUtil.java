@@ -9,8 +9,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.CraftingManager;
+import net.minecraft.src.IRecipe;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.ShapedRecipes;
+import net.minecraft.src.ShapelessRecipes;
+import net.minecraft.src.TileEntity;
 
 public class StoreUtil extends ReferenceQueue<GUIStore>{
 
@@ -25,14 +30,10 @@ public class StoreUtil extends ReferenceQueue<GUIStore>{
 	
 	private StoreUtil() {
 		purchaseable = new ArrayList<Integer>();
-		setPrice(Block.blockClay, 100);
-		setPrice(Block.blockDiamond, 9000);
-		setPrice(Block.blockGold, 1800);
-		setPrice(Block.blockLapis, 450);
-		setPrice(Block.blockSnow, 10);
-		setPrice(Block.blockSteel, 450);
+
+		
 		setPrice(Block.bookShelf, 500);
-		setPrice(Block.brick.blockID,20);
+		setPrice(Block.brick, 20);
 		setPrice(Block.button,50);
 		setPrice(Block.cactus,8);
 		setPrice(Block.cake.blockID,100);
@@ -41,53 +42,111 @@ public class StoreUtil extends ReferenceQueue<GUIStore>{
 		setPrice(Block.cobblestoneMossy.blockID,4);
 		setPrice(Block.crate.blockID,60);
 		setPrice(Block.crops.blockID,20,false);
-		setPrice(Block.dirt.blockID,1);
+		setPrice(Block.dirt.blockID,1,false);
 		setPrice(Block.dispenser, 300);
 		setPrice(Block.doorSteel.blockID,200,false);
-		
+		setPrice(Block.fire.blockID, 10,false);
+		setPrice(Block.glowStone.blockID,100);
+		setPrice(Block.mushroomBrown, 20);
+		setPrice(Block.mushroomRed, 20);
+		setPrice(Block.oreIron.blockID, 45,false);
+		setPrice(Block.oreGold.blockID,90,false);
+		setPrice(Block.planks, 2);
 		setPrice(Block.plantRed, 5);
 		setPrice(Block.plantYellow, 5);
-		
+		setPrice(Block.pumpkin, 40);
+		setPrice(Block.sapling, 5);
 		setPrice(Block.stone.blockID,3);
-		
 		setPrice(Block.sand.blockID,2);
-		
-		
-		
-		setPrice(Block.glowStone.blockID,100);
-		
+
 		
 		setPrice(Block.obsidian.blockID,1500);
-		setPrice(Block.gravel.blockID,2);
+		setPrice(Block.gravel.blockID,2,false);
 		
 		
 		setPrice(Block.glass.blockID,7);
 		setPrice(Block.oreCoal.blockID,20,false);
 		setPrice(Block.oreDiamond.blockID,1000,false);
+		setPrice(Block.reed, 15);
+		setPrice(Block.wood, 8);
 		
+		setPrice(Block.pressurePlatePlanks,getPrice(Block.planks)*2);
+		setPrice(Block.pressurePlateStone,getPrice(Block.stone)*2);
 		
-		setPrice(Item.appleRed, 100);
-		setPrice(Item.appleGold, 400);
+		setPrice(Item.appleRed, 50);
 		setPrice(Item.arrow, 300);
-		setPrice(Item.axeDiamond, 1200);
-		setPrice(Item.axeGold, 500);
-		setPrice(Item.axeSteel, 200);
-		setPrice(Item.axeStone, 100);
-		setPrice(Item.axeWood, 20);
 		setPrice(Item.bed, 400);
 		setPrice(Item.bone, 50);
-		setPrice(Item.cake, 60);
+		setPrice(Item.book, 40);
+		setPrice(Item.bucketMilk, 170);
+		setPrice(Item.clay,40);
+		setPrice(Item.coal, getPrice(Block.oreCoal));
+		setPrice(Item.diamond, getPrice(Block.oreDiamond));
 		setPrice(Item.feather, 10);
+		setPrice(Item.ingotIron, 50);
+		setPrice(Item.ingotGold,200);
+		setPrice(Item.gunpowder, 20);
+		setPrice(Item.snowball, 3);
+		setPrice(Item.dyePowder, 8);
+		setPrice(Item.egg, 20);
+		setPrice(Item.flint, 10);
+		setPrice(Item.paper, 20);
+		setPrice(Item.leather, 30);
+		setPrice(Item.lightStoneDust, 60);
 		
-		
-		
+		setPrice(Item.porkRaw, 40);
+		setPrice(Item.porkCooked, 50);
+		setPrice(Item.redstone, 25);
+		setPrice(Item.reed, 10);
+		setPrice(Item.sugar,30);
 		setPrice(Item.silk, 50);
-		setPrice(Item.coal, getPrice(Block.oreCoal)+2);
-		setPrice(Item.diamond, getPrice(Block.oreDiamond)+10);
 		setPrice(Item.stick,2);
+		setPrice(Item.wheat, 10);
 		
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		for(int i = 0; i < CraftingManager.getInstance().func_25193_b().size(); i++)
+        {
+			IRecipe r = (IRecipe) CraftingManager.getInstance().func_25193_b().get(i);
+			int totalCost=0;
+			if(r instanceof ShapedRecipes) {
+				ShapedRecipes s = (ShapedRecipes)r;
+				for(int j=0; j < s.recipeItems.length; ++j) {
+					if(s.recipeItems[j]!=null) {
+						if(getCost(s.recipeItems[j])==0) {
+							System.out.println("MISSING" + s.recipeItems[j].func_20109_f());
+						}
+						totalCost+=getCost(s.recipeItems[j]);
+					}
+				}
+			} else if(r instanceof ShapelessRecipes) {
+				ShapelessRecipes sr = (ShapelessRecipes)r;
+				for(int j=0; j < sr.recipeItems.size(); ++j) {
+					totalCost+=getCost((ItemStack) sr.recipeItems.get(j));
+					if(getCost((ItemStack) sr.recipeItems.get(j))==0) {
+						
+						System.out.println("MISSING" + ((ItemStack) sr.recipeItems.get(j)).func_20109_f());
+					}
+				}
+			} else {
+				System.out.println("THERE IS ANOTHER " + r.getClass());
+			}
+			totalCost = Math.max(1, totalCost);
+			if(getPrice(r.func_25117_b().itemID)==0) {
+				//Prevent overwriting of already set value
+				setPrice(r.func_25117_b().itemID, totalCost/r.func_25117_b().stackSize);
+			}
+			
+			
+        }
+	
 		
 		storeTimer = new Timer();
 		scheduleTimer();
@@ -95,7 +154,7 @@ public class StoreUtil extends ReferenceQueue<GUIStore>{
 	}
 	
 	private void scheduleTimer() {
-		long delay = 1000*20;
+		long delay = 1000*300 + (new Random()).nextInt(1000*300);
 		storeTimer.schedule(new StoreUpdateTask(), delay);
 	}
 	

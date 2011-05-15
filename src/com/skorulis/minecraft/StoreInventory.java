@@ -77,7 +77,7 @@ public class StoreInventory implements IInventory{
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		contents[i] = itemstack.copy();
+		contents[i] = itemstack;
         if(itemstack != null && itemstack.stackSize > getInventoryStackLimit())
         {
             itemstack.stackSize = getInventoryStackLimit();

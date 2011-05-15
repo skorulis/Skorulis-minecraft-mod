@@ -13,3 +13,7 @@ public GUIStore displayGUIStore(IInventory inv) {
 
 Minecraft.java:1162 ADD
 SKDataManager.loadStart(mcDataDir+File.separator+"saves"+File.separator+s);
+
+ShapelessRecipes.java:84 MODIFY
+public final List recipeItems;
+
