@@ -40,7 +40,6 @@ public class StoreUtil extends ReferenceQueue<GUIStore>{
 		setPrice(Block.cloth.blockID,10);
 		setPrice(Block.cobblestone.blockID,3);
 		setPrice(Block.cobblestoneMossy.blockID,4);
-		setPrice(Block.crate.blockID,60);
 		setPrice(Block.crops.blockID,20,false);
 		setPrice(Block.dirt.blockID,1,false);
 		setPrice(Block.dispenser, 300);
@@ -49,6 +48,7 @@ public class StoreUtil extends ReferenceQueue<GUIStore>{
 		setPrice(Block.glowStone.blockID,100);
 		setPrice(Block.mushroomBrown, 20);
 		setPrice(Block.mushroomRed, 20);
+		setPrice(Block.netherrack, 5);
 		setPrice(Block.oreIron.blockID, 45,false);
 		setPrice(Block.oreGold.blockID,90,false);
 		setPrice(Block.planks, 2);
@@ -78,7 +78,9 @@ public class StoreUtil extends ReferenceQueue<GUIStore>{
 		setPrice(Item.bed, 400);
 		setPrice(Item.bone, 50);
 		setPrice(Item.book, 40);
+		setPrice(Item.bucketLava, 160);
 		setPrice(Item.bucketMilk, 170);
+		setPrice(Item.bucketWater,155);
 		setPrice(Item.clay,40);
 		setPrice(Item.coal, getPrice(Block.oreCoal));
 		setPrice(Item.diamond, getPrice(Block.oreDiamond));
@@ -112,9 +114,11 @@ public class StoreUtil extends ReferenceQueue<GUIStore>{
 		
 		
 		
-		for(int i = 0; i < CraftingManager.getInstance().func_25193_b().size(); i++)
+		
+		
+		for(int i = 0; i < CraftingManager.getInstance().getRecipeList().size(); i++)
         {
-			IRecipe r = (IRecipe) CraftingManager.getInstance().func_25193_b().get(i);
+			IRecipe r = (IRecipe) CraftingManager.getInstance().getRecipeList().get(i);
 			int totalCost=0;
 			if(r instanceof ShapedRecipes) {
 				ShapedRecipes s = (ShapedRecipes)r;

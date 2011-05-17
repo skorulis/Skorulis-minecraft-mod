@@ -16,9 +16,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>minecraft</name>
+			<name>modifiedSource</name>
 			<type>2</type>
-			<location>C:/minecraft/mcp31/src/minecraft</location>
+			<location>C:/minecraft/modifiedSource</location>
 		</link>
 	</linkedResources>
 </projectDescription>

@@ -6,6 +6,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
 import net.minecraft.src.Material;
+import net.minecraft.src.ModLoader;
 import net.minecraft.src.World;
 
 import com.skorulis.minecraft.BlockUtil;
@@ -34,8 +35,9 @@ public class StoreBlock extends Block {
 	 }
 	 
 	 public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
-		 
-		 StoreUtil.instance().guiRef = new WeakReference<GUIStore>(((EntityPlayerSP)entityplayer).displayGUIStore(getInventory()));
+		 GUIStore store = new GUIStore(entityplayer, getInventory());
+		 StoreUtil.instance().guiRef = new WeakReference<GUIStore>(store);
+		 ModLoader.OpenGUI(entityplayer, store);
 		 
 		 return true;
 	 }

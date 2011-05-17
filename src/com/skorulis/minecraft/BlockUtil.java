@@ -1,6 +1,7 @@
 package com.skorulis.minecraft;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.ModLoader;
 
 public class BlockUtil {
 
@@ -25,7 +26,10 @@ public class BlockUtil {
     
     static {
     	copperOre = (new CopperOreBlock(1));
-        store = new StoreBlock(76);
+        store = new StoreBlock(ModLoader.addOverride("/terrain.png", "/skres/shop.png"));
+    	//store = new StoreBlock(88);
+    	ModLoader.RegisterBlock(store);
+        ModLoader.AddName(store, "Store");
         System.out.println("STORE " + store.blockID);
     }
 	
