@@ -3,6 +3,7 @@ package net.minecraft.src;
 
 
 import com.skorulis.minecraft.BlockUtil;
+import com.skorulis.minecraft.MinerItem;
 import com.skorulis.minecraft.SKDataManager;
 import com.skorulis.minecraft.SKRecipes;
 
@@ -15,6 +16,8 @@ public class mod_SKMod extends BaseMod{
 	
 	public mod_SKMod() {
 		BlockUtil.init();
+		
+		
 		SKRecipes.addRecipes(CraftingManager.getInstance());
 	}
 

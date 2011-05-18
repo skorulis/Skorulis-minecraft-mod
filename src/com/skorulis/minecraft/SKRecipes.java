@@ -1,6 +1,5 @@
 package com.skorulis.minecraft;
 
-import net.minecraft.src.BaseMod;
 import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.Item;
@@ -13,6 +12,7 @@ public class SKRecipes {
 		String storePattern[] = { "XXX", "# #","!!!"};
 		//ModLoader.AddRecipe(new ItemStack(BlockUtil.store), new Object[]{"##","##",Character.valueOf('#'),Block.dirt });
 		ModLoader.AddRecipe(new ItemStack(BlockUtil.store), new Object[]{storePattern,Character.valueOf('X'),Block.cloth,Character.valueOf('#'),Item.stick,Character.valueOf('!'),Block.planks });
+		ModLoader.AddRecipe(new ItemStack(BlockUtil.minerItem), new Object[] {"##","##",Character.valueOf('#'),Block.dirt});
 	}
 	
 }

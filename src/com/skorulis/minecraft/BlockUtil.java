@@ -1,6 +1,7 @@
 package com.skorulis.minecraft;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.Item;
 import net.minecraft.src.ModLoader;
 
 public class BlockUtil {
@@ -23,14 +24,19 @@ public class BlockUtil {
 	
 	public static final Block copperOre;
     public static final Block store;
+    public static final Item minerItem;
     
     static {
     	copperOre = (new CopperOreBlock(1));
         store = new StoreBlock(ModLoader.addOverride("/terrain.png", "/skres/shop.png"));
+        minerItem = new MinerItem(195);
     	//store = new StoreBlock(88);
     	ModLoader.RegisterBlock(store);
         ModLoader.AddName(store, "Store");
-        System.out.println("STORE " + store.blockID);
+     
+		ModLoader.AddName(minerItem, "Miner robot");
+        
+        
     }
 	
     
