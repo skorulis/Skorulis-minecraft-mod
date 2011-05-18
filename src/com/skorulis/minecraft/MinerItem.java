@@ -20,10 +20,10 @@ public class MinerItem extends Item {
 	}
 	
 	public ItemStack onItemRightClick(ItemStack itemstack,World world,EntityPlayer player) {
-		EntityChicken c = new EntityChicken(world);
-		c.setPosition(player.posX, player.posY, player.posZ+5);
-		world.entityJoinedWorld(c);
-		itemstack.stackSize=0;
+		RobotMiner robot = new RobotMiner(world);
+		robot.setPosition(player.posX, player.posY, player.posZ+5);
+		world.entityJoinedWorld(robot);
+		//itemstack.stackSize=0;
 		return itemstack;
 	}
 	
